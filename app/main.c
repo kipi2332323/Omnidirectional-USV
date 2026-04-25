@@ -42,11 +42,11 @@ int main(void)
 
 	while(1) 
 	{
-		OLED_Printf(1,1,"%1d,%1d,%1d,%4d%4d%1d", Self_left, Self_right,Move_Mode, x, y,Motor_switch);
-		OLED_Printf(2,1,"Yaw:%7.2f", yaw_angle_real);
-		OLED_Printf(4,1,"%.2f %.2f %.2f",Kp,Ki,Kd);//显示PID参数
-		OLED_Printf(3,1,"Gz :%7.2f", gyro_z_dps);
-		My_USART_Printf(USART1, "%.2f,%.2f\r\n", Target, yaw_angle_real);
+		// OLED_Printf(1,1,"%1d,%1d,%1d,%4d%4d%1d", Self_left, Self_right,Move_Mode, x, y,Motor_switch);
+		// OLED_Printf(2,1,"Yaw:%7.2f", yaw_angle_real);
+		// OLED_Printf(4,1,"%.2f %.2f %.2f",Kp,Ki,Kd);//显示PID参数
+		// OLED_Printf(3,1,"Gz :%7.2f", gyro_z_dps);
+		// My_USART_Printf(USART1, "%.2f,%.2f\r\n", Target, yaw_angle_real);
 	}
 }
 
