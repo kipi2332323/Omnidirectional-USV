@@ -46,7 +46,7 @@ int main(void)
 		// OLED_Printf(2,1,"Yaw:%7.2f", yaw_angle_real);
 		// OLED_Printf(4,1,"%.2f %.2f %.2f",Kp,Ki,Kd);//ÏÔÊ¾PID²ÎÊý
 		// OLED_Printf(3,1,"Gz :%7.2f", gyro_z_dps);
-		// My_USART_Printf(USART1, "%.2f,%.2f\r\n", Target, yaw_angle_real);
+		My_USART_Printf(USART1, "%.2f,%.2f\r\n", Target, yaw_angle_real);
 	}
 }
 
