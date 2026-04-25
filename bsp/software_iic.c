@@ -1,6 +1,5 @@
 #include "software_iic.h"
 
-
 void huidu_init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure={0};
@@ -16,9 +15,10 @@ void huidu_init(void)
 /* 基本时序操作 */
 static void IIC_Delay(void)
 {
-    delay_us(10);  // 根据实际I2C速度调整延时
+    delay_us(10);  // 根据实际 I2C 速度调整延时
 }
-/* 软件I2C基础函数 */
+
+/* 软件 I2C 基础函数 */
 void IIC_Start(void)
 {
     SDA_HIGH();
@@ -87,8 +87,8 @@ unsigned char IIC_RecvByte(void)
     SDA_HIGH();
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     GPIO_InitStruct.GPIO_Pin = SDA_PIN;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;        // 关键修改！
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;            // 保持上拉
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;   // 临时切换为输入模式读取 SDA
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;   // 保持上拉
     GPIO_Init(SDA_PORT, &GPIO_InitStruct);
     for(unsigned char i = 0; i < 8; i++) {
         dat <<= 1;
@@ -98,27 +98,27 @@ unsigned char IIC_RecvByte(void)
         SCL_LOW();
         IIC_Delay();
     }
-		GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-		GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
     GPIO_Init(SDA_PORT, &GPIO_InitStruct);
     return dat;
 }
 
-/* 应用层函数改写 */
+/* 应用层接口 */
 unsigned char IIC_ReadByte(unsigned char Salve_Address)
 {
     unsigned char dat;
-    
+
     IIC_Start();
     IIC_SendByte(Salve_Address | 0x01);  // 读模式
     dat = IIC_RecvByte();
     IIC_SendNAck();
     IIC_Stop();
-    
+
     return dat;
 }
 
-unsigned char IIC_ReadBytes(unsigned char Salve_Address, unsigned char Reg_Address, 
+unsigned char IIC_ReadBytes(unsigned char Salve_Address, unsigned char Reg_Address,
                           unsigned char *Result, unsigned char len)
 {
     IIC_Start();
@@ -135,7 +135,7 @@ unsigned char IIC_ReadBytes(unsigned char Salve_Address, unsigned char Reg_Addre
         IIC_Stop();
         return 0;
     }
-    
+
     for(unsigned char i = 0; i < len; i++) {
         Result[i] = IIC_RecvByte();
         (i == len-1) ? IIC_SendNAck() : IIC_SendAck();
@@ -144,7 +144,7 @@ unsigned char IIC_ReadBytes(unsigned char Salve_Address, unsigned char Reg_Addre
     return 1;
 }
 
-unsigned char IIC_WriteByte(unsigned char Salve_Address, unsigned char Reg_Address, 
+unsigned char IIC_WriteByte(unsigned char Salve_Address, unsigned char Reg_Address,
                           unsigned char data)
 {
     IIC_Start();
@@ -176,7 +176,7 @@ unsigned char IIC_WriteBytes(unsigned char Salve_Address, unsigned char Reg_Addr
         IIC_Stop();
         return 0;
     }
-    
+
     for(unsigned char i = 0; i < len; i++) {
         if(IIC_SendByte(data[i])) {
             IIC_Stop();
@@ -186,41 +186,46 @@ unsigned char IIC_WriteBytes(unsigned char Salve_Address, unsigned char Reg_Addr
     IIC_Stop();
     return 1;
 }
+
 unsigned char Ping(void)
 {
 	unsigned char dat;
-	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1,GW_GRAY_PING,&dat,1);
+	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1, GW_GRAY_PING, &dat, 1);
 	if(dat==GW_GRAY_PING_OK)
 	{
 			return 0;
-	}	
+	}
 	else return 1;
 }
+
 unsigned char IIC_Get_Digtal(void)
 {
 	unsigned char dat;
-	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1,GW_GRAY_DIGITAL_MODE,&dat,1);
-	return dat;
-}
-unsigned char IIC_Get_Anolog(unsigned char * Result,unsigned char len)
-{
-	if(IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1,GW_GRAY_ANALOG_BASE_,Result,len))return 1;
-	else return 0;
-}
-unsigned char IIC_Get_Single_Anolog(unsigned char Channel)
-{
-	unsigned char dat;
-	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1,GW_GRAY_ANALOG(Channel),&dat,1);
-	return dat;
-}
-unsigned char IIC_Anolog_Normalize(uint8_t Normalize_channel)
-{
-	return IIC_WriteBytes(GW_GRAY_ADDR_DEF<<1,0xCF,&Normalize_channel,1);
-}
-unsigned short IIC_Get_Offset(void )
-{
-	unsigned char dat;
-	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1,Offset,&dat,1);
+	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1, GW_GRAY_DIGITAL_MODE, &dat, 1);
 	return dat;
 }
 
+unsigned char IIC_Get_Anolog(unsigned char * Result,unsigned char len)
+{
+	if(IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1, GW_GRAY_ANALOG_BASE_, Result, len)) return 1;
+	else return 0;
+}
+
+unsigned char IIC_Get_Single_Anolog(unsigned char Channel)
+{
+	unsigned char dat;
+	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1, GW_GRAY_ANALOG(Channel), &dat, 1);
+	return dat;
+}
+
+unsigned char IIC_Anolog_Normalize(uint8_t Normalize_channel)
+{
+	return IIC_WriteBytes(GW_GRAY_ADDR_DEF<<1, 0xCF, &Normalize_channel, 1);
+}
+
+unsigned short IIC_Get_Offset(void)
+{
+	unsigned char dat;
+	IIC_ReadBytes(GW_GRAY_ADDR_DEF<<1, Offset, &dat, 1);
+	return dat;
+}

@@ -1,7 +1,7 @@
 #ifndef __OLEDFONT_H
 #define __OLEDFONT_H
 
-/*OLED字模库，�?像素，高16像素*/
+/* OLED 8x16 ASCII ��ģ�� */
 const uint8_t OLED_F8x16[][16]=
 {
 	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -291,4 +291,3 @@ const uint8_t OLED_F8x16[][16]=
 };
 
 #endif
-

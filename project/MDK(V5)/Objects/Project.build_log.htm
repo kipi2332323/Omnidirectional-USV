@@ -27,7 +27,56 @@ Project File Date:  03/29/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Project'
-".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+compiling ADC.c...
+..\..\bsp\ADC.c(58): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\bsp\ADC.c: 1 warning, 0 errors
+compiling Control.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\Control.c: 1 warning, 0 errors
+compiling UART_ALL.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\UART_ALL.c(537): warning:  #167-D: argument of type "volatile uint8_t *" is incompatible with parameter of type "uint8_t *"
+              UART5_DataProcess(UART5_RX); // 调用数据处理函数
+..\..\bsp\UART_ALL.c: 2 warnings, 0 errors
+compiling oled.c...
+..\..\bsp\OLED\oled.c(308): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\bsp\OLED\oled.c: 1 warning, 0 errors
+compiling Sys.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\Sys.c: 1 warning, 0 errors
+compiling Motor.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\Motor.c(99): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\bsp\Motor.c: 2 warnings, 0 errors
+compiling main.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\ADC.h(4): warning:  #1-D: last line of file ends without a newline
+  void Adc_Init(void);
+..\..\app\main.c(13): warning:  #1295-D: Deprecated declaration Motor_Control - give arg types
+  void Motor_Control();
+..\..\app\main.c(14): warning:  #1295-D: Deprecated declaration Pid_Control_forward - give arg types
+  float Pid_Control_forward();
+..\..\app\main.c: 4 warnings, 0 errors
+compiling board.c...
+compiling Encoder.c...
+..\..\bsp\Encoder.h(14): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\..\bsp\Encoder.c(185): warning:  #1-D: last line of file ends without a newline
+  }
+..\..\bsp\Encoder.c: 2 warnings, 0 errors
+compiling fifo.c...
+linking...
+Program Size: Code=11368 RO-data=1964 RW-data=140 ZI-data=1428  
+FromELF: creating hex file...
+".\Objects\Project.axf" - 0 Error(s), 14 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -40,7 +89,7 @@ Package Vendor: Keil
   C:/Keil_v5/ARM/PACK/Keil/STM32F4xx_DFP/2.17.1/Drivers/CMSIS/Device/ST/STM32F4xx/Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

@@ -1,8 +1,7 @@
 #include "stm32f4xx.h"                  // Device header
-#include "Sys.h" 
+#include "Sys.h"
 
-
-// ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½PA8ï¿½ï¿½TIM1_CH1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½F407ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// TIM1 µÄ 4 Â· PWM Êä³ö·Ö±ð¶ÔÓ¦Ç°¡¢ºó¡¢×ó¡¢ÓÒÍÆ½øÆ÷
 #define PWM_PIN_GPIO_PORT_f GPIOE
 #define PWM_PIN_GPIO_PORT_b GPIOE
 #define PWM_PIN_GPIO_PORT_l GPIOE
@@ -15,17 +14,15 @@
 #define PWM_TIMER_CLK     RCC_APB2Periph_TIM1
 #define PWM_GPIO_CLK      RCC_AHB1Periph_GPIOE
 
-// AM32ï¿½ï¿½ï¿½PWMï¿½ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Ä£ï¿½
-#define PWM_STOP     1500    // ï¿½ï¿½Î»ï¿½ï¿½Í£Ö¹
-#define PWM_REV_MAX  1000    // ï¿½ï¿½×ªï¿½ï¿½ï¿½Öµï¿½ï¿?000ï¿½ï¿½sï¿½ï¿½
-#define PWM_FWD_MAX  2000    // ï¿½ï¿½×ªï¿½ï¿½ï¿½Öµï¿½ï¿?000ï¿½ï¿½sï¿½ï¿½
-#define PWM_STEP     5       // ï¿½ï¿½ï¿½Ù²ï¿½ï¿½ï¿½
-#define DELAY_STEP   20      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½msï¿½ï¿½
-#define DELAY_HOLD   3000    // Ã¿ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¨msï¿½ï¿½
-
+// AM32 µçµ÷ PWM Êä³ö·¶Î§
+#define PWM_STOP     1500    // ÖÐÎ»£¬±íÊ¾Í£Ö¹
+#define PWM_REV_MAX  1000    // ·´×ª×î´óÖµ£¬¶ÔÓ¦ 1000 us
+#define PWM_FWD_MAX  2000    // Õý×ª×î´óÖµ£¬¶ÔÓ¦ 2000 us
+#define PWM_STEP     5       // µ÷ËÙ²½½ø
+#define DELAY_STEP   20      // µ÷ËÙ²½½ø¼ä¸ô£¬µ¥Î» ms
+#define DELAY_HOLD   3000    // Ã¿ÖÖ×´Ì¬±£³ÖÊ±¼ä£¬µ¥Î» ms
 
 // º¯ÊýÉùÃ÷
 void PWM_Throttle_Init(void);
 void Set_PWM(uint8_t channel, uint16_t value);
 void Set_PWM_All(uint16_t value_f, uint16_t value_b, uint16_t value_l, uint16_t value_r);
-

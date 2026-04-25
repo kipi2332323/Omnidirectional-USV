@@ -5,7 +5,7 @@
 #include "Control.h"
 #include "board.h"
 
-extern volatile bool Self_left,Self_right,Move_Mode_flag,Motor_switch;//ºáÏò-0 ²îËÙ-1
+extern volatile bool Self_left,Self_right,Move_Mode_flag,Motor_switch; // Ò£¿Ø×´Ì¬Î»
 extern int16_t x,y;
 extern uint8_t Move_Mode;
 extern float Kp,Ki,Kd;

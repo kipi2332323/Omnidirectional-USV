@@ -42,7 +42,6 @@ int main(void)
 
 	while(1) 
 	{
-		//你好世界 V1.0
 		OLED_Printf(1,1,"%1d,%1d,%1d,%4d%4d%1d", Self_left, Self_right,Move_Mode, x, y,Motor_switch);
 		OLED_Printf(2,1,"Yaw:%7.2f", yaw_angle_real);
 		OLED_Printf(4,1,"%.2f %.2f %.2f",Kp,Ki,Kd);//显示PID参数

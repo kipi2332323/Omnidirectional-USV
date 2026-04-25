@@ -3,63 +3,60 @@
  * 开发板官网：www.lckfb.com
  * 技术支持常驻论坛，任何技术问题欢迎随时交流学习
  * 立创论坛：https://oshwhub.com/forum
- * 关注bilibili账号：【立创开发板】，掌握我们的最新动态！
+ * 关注 bilibili 账号：【立创开发板】，掌握最新动态
  * 不靠卖板赚钱，以培养中国工程师为己任
- * 
-
- Change Logs:
+ *
+ * Change Logs:
  * Date           Author       Notes
- * 2024-03-07     LCKFB-LP    first version
+ * 2024-03-07     LCKFB-LP     first version
  */
 #include <board.h>
 
 static __IO uint32_t g_system_tick = 0;
 
-
 /**
- * This function will initial stm32 board.
+ * @brief 初始化 STM32 板级基础资源。
  */
 void board_init(void)
 {
-    /* NVIC Configuration */
+    /* 配置中断向量表基址 */
 #define NVIC_VTOR_MASK              0x3FFFFF80
 #ifdef  VECT_TAB_RAM
-    /* Set the Vector Table base location at 0x10000000 */
+    /* 向量表位于 RAM */
     SCB->VTOR  = (0x10000000 & NVIC_VTOR_MASK);
 #else  /* VECT_TAB_FLASH  */
-    /* Set the Vector Table base location at 0x08000000 */
+    /* 向量表位于 Flash */
     SCB->VTOR  = (0x08000000 & NVIC_VTOR_MASK);
 #endif
 
-	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
-		SysTick->LOAD=0xFFFF; // 清空计数器
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk; // 开始计数
-	
-//	RCC_ClocksTypeDef rcc;
-//	RCC_GetClocksFreq(&rcc);//读取系统时钟频率
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
+    SysTick->LOAD = 0xFFFF; // 设置 SysTick 自动重装载值
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk; // 启动 SysTick
 
+//  RCC_ClocksTypeDef rcc;
+//  RCC_GetClocksFreq(&rcc); // 读取系统时钟频率
+
+    (void)g_system_tick;
 }
 
 /**
- -  @brief  用内核的 systick 实现的微妙延时
- -  @note   None
- -  @param  _us:要延时的us数
- -  @retval None
-*/
+ * @brief 使用 SysTick 实现微秒级延时。
+ * @param _us 需要延时的微秒数。
+ */
 void delay_us(uint32_t _us)
 {
     uint32_t ticks;
     uint32_t told, tnow, tcnt = 0;
 
-    // 计算需要的时钟数 = 延迟微秒数 * 每微秒的时钟数
+    // 计算目标时钟数 = 延时微秒数 * 每微秒对应的时钟数
     ticks = _us * (SystemCoreClock / 1000000);
 
-    // 获取当前的SysTick值
+    // 读取当前 SysTick 计数值
     told = SysTick->VAL;
 
     while (1)
     {
-        // 重复刷新获取当前的SysTick值
+        // 持续刷新当前 SysTick 计数值
         tnow = SysTick->VAL;
 
         if (tnow != told)
@@ -71,7 +68,7 @@ void delay_us(uint32_t _us)
 
             told = tnow;
 
-            // 如果达到了需要的时钟数，就退出循环
+            // 累计到目标时钟数后退出
             if (tcnt >= ticks)
                 break;
         }
@@ -79,11 +76,9 @@ void delay_us(uint32_t _us)
 }
 
 /**
- -  @brief  调用用内核的 systick 实现的毫秒延时
- -  @note   None
- -  @param  _ms:要延时的ms数
- -  @retval None
-*/
+ * @brief 基于 `delay_us` 实现毫秒级延时。
+ * @param _ms 需要延时的毫秒数。
+ */
 void delay_ms(uint32_t _ms) { delay_us(_ms * 1000); }
 
 void delay_1ms(uint32_t ms) { delay_us(ms * 1000); }
